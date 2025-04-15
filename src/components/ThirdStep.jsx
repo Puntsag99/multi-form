@@ -22,11 +22,29 @@ export const ThirdStep = ({
     inputImageRef.current?.click();
   };
 
-  const [previewlink, setPreviewLink] = useState("");
-
   const handleChange = (event) => {
     const file = Array.from(event.target.files)[0];
+    if (file) {
+      setPreviewLink(URL.createObjectURL(file));
+    }
+  };
+
+  const [previewlink, setPreviewLink] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const file = Array.from(event.dataTransfer.files)[0];
     setPreviewLink(URL.createObjectURL(file));
+  };
+
+  const hanldeDragOver = (event) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
   };
 
   return (
@@ -59,11 +77,29 @@ export const ThirdStep = ({
         />
 
         <div
+          onDrop={handleDrop}
+          onDragOver={hanldeDragOver}
+          onDragLeave={handleDragLeave}
           onClick={openBrowse}
-          className="bg-gray-100 h-45 w-104 flex flex-col items-center justify-center rounded-md cursor-pointer"
+          className={`${
+            isDragging
+              ? "border border-dashed border-black"
+              : " border  border-amber-950"
+          } bg-gray-100 h-45 w-104 flex flex-col items-center justify-center rounded-md cursor-pointer relative`}
         >
-          <Image width={28} height={28} src={previewlink} alt="addImage" />
-          Browse or Drop Image
+          {previewlink ? (
+            <Image
+              layout="fill"
+              src={previewlink}
+              alt="Uploaded image"
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex flex-col">
+              <Image width={28} height={28} src="/img/Add.svg" alt="add" />
+              Browse or Drop Image
+            </div>
+          )}
         </div>
 
         <Buttons

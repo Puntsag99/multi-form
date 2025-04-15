@@ -4,9 +4,9 @@ import { Header, UserInput, Buttons } from "@/components";
 
 export const FirstStep = ({
   addStep,
+  formValues,
   currentStep,
   handleInputChange,
-  formValues,
 }) => {
   const { firstName, lastName, userName } = formValues;
 
@@ -21,30 +21,31 @@ export const FirstStep = ({
         <Header />
         <div className="flex flex-col gap-y-3">
           <UserInput
+            type="text"
             name="firstName"
             value={firstName}
-            onChange={handleInputChange}
             label="First Name"
-            type="text"
+            onChange={handleInputChange}
             placeholder="Your first name"
           />
 
           <UserInput
-            name="lastName"
-            value={lastName}
-            onChange={handleInputChange}
-            label="Last name"
             type="text"
+            name="lastName"
+            gerert
+            value={lastName}
+            label="Last name"
+            onChange={handleInputChange}
             placeholder="Yout last name"
           />
 
           <UserInput
+            type="text"
             name="userName"
             value={userName}
-            onChange={handleInputChange}
             label="User name"
-            type="text"
             placeholder="Your username"
+            onChange={handleInputChange}
           />
         </div>
 

@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { FirstStep, SecondStep, ThirdStep, FinallyStep } from "@/components";
 
 const initialFormValues = {
-  firstName: "",
+  email: "",
+  password: "",
   lastName: "",
   userName: "",
-  email: "",
-  phoneNumber: "",
-  password: "",
-  confirmPassword: "",
+  firstName: "",
   dateOfBirth: "",
+  phoneNumber: "",
   profileImage: "",
+  confirmPassword: "",
 };
 
 const Home = () => {
@@ -36,6 +36,8 @@ const Home = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+
+    console.log("input value type:", typeof value);
 
     setFormValues((previousValues) => ({ ...previousValues, [name]: value }));
   };

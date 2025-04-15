@@ -14,7 +14,7 @@ export const SecondStep = ({
       initial={{ opacity: 0, x: 100 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -100 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 2 }}
     >
       <div className="w-120 bg-white flex  flex-col  pt-8 items-center ">
         <Header />
