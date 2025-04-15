@@ -1,7 +1,8 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
+
+import { useState, useRef } from "react";
+import { AnimatePresence } from "framer-motion";
 import { FirstStep, SecondStep, ThirdStep, FinallyStep } from "@/components";
-import { useState } from "react";
 
 const initialFormValues = {
   firstName: "",
@@ -19,13 +20,11 @@ const Home = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formValues, setFormValues] = useState(initialFormValues);
 
-  console.log("end yu bna:", formValues);
+  console.log("values:", formValues);
 
   const addStep = () => {
     setCurrentStep((prev) => prev + 1);
   };
-
-  // console.log(typeof addStep);
 
   const previousStep = () => {
     setCurrentStep((prev) => prev - 1);
@@ -44,20 +43,13 @@ const Home = () => {
   return (
     <div className="h-screen bg-[#F4F4F4] flex justify-center pt-[182px]">
       <AnimatePresence mode="wait">
-        <motion.div
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -100 }}
-          transition={{ duration: 1.5 }}
-        >
-          <StepMotion
-            addStep={addStep}
-            previousStep={previousStep}
-            currentStep={currentStep}
-            handleInputChange={handleInputChange}
-            formValues={formValues}
-          />
-        </motion.div>
+        <StepMotion
+          addStep={addStep}
+          formValues={formValues}
+          currentStep={currentStep}
+          previousStep={previousStep}
+          handleInputChange={handleInputChange}
+        />
       </AnimatePresence>
     </div>
   );

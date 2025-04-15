@@ -1,3 +1,5 @@
+"use client";
+import { motion } from "framer-motion";
 import { Header, UserInput, Buttons } from "@/components";
 
 export const FirstStep = ({
@@ -9,7 +11,12 @@ export const FirstStep = ({
   const { firstName, lastName, userName } = formValues;
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -100 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="w-120 bg-white flex  flex-col  pt-8  items-center ">
         <Header />
         <div className="flex flex-col gap-y-3">
@@ -40,8 +47,9 @@ export const FirstStep = ({
             placeholder="Your username"
           />
         </div>
+
         <Buttons addStep={addStep} currentStep={currentStep} />
       </div>
-    </div>
+    </motion.div>
   );
 };

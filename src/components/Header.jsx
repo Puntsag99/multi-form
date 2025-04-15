@@ -1,4 +1,6 @@
-import Image from "next/legacy/image";
+"use client";
+
+import Image from "next/image";
 
 export const Header = () => {
   return (

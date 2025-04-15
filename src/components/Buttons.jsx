@@ -1,3 +1,5 @@
+"use client";
+
 export const Buttons = ({ addStep, previousStep, currentStep }) => {
   console.log("current:", currentStep);
   return (
