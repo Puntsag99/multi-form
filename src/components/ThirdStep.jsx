@@ -4,17 +4,58 @@ import Image from "next/legacy/image";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { Header, UserInput, Buttons } from "@/components";
+import { isEmpty } from "@/utils/is-emtpy";
+
+const validStepThree = ({ dateOfBirth, profileImage }) => {
+  const validationErrors = {};
+  if (isEmpty(dateOfBirth)) {
+    validationErrors.dateOfBirth = "Төрсөн өдрөө оруулна уу.";
+  }
+
+  // else if (бй) {
+  //   validationErrors.dateOfBirth = "Та 18 ба түүнээс дээш настай байх ёстой.";
+  // } else if (a) {
+  //   validationErrors.dateOfBirth =
+  //     "Төрсөн өдөр одоогийн огнооноос өмнө байх ёстой.";
+  // }
+
+  if (isEmpty(profileImage)) {
+    validationErrors.profileImage = "Порфайл зурагаа оруулна уу.";
+  }
+
+  const isFormValid = Object.keys(validationErrors).length === 0;
+
+  return { isFormValid, validationErrors };
+};
 
 export const ThirdStep = ({
   ref,
   hidden,
+  errors,
   addStep,
   formValues,
   currentStep,
   previousStep,
+  updateFormErrors,
   handleInputChange,
 }) => {
-  const { dateOfBirth } = formValues;
+  const { dateOfBirth, profileImage } = formValues;
+
+  const { dateOfBirth: errorDateOfBirth, profileImage: errorProfileImage } =
+    errors;
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const { isFormValid, validationErrors } = validStepThree(formValues);
+
+    if (isFormValid) {
+      addStep();
+      return;
+    }
+
+    updateFormErrors(validationErrors);
+  };
 
   const inputImageRef = useRef(null);
 
@@ -26,6 +67,13 @@ export const ThirdStep = ({
     const file = Array.from(event.target.files)[0];
     if (file) {
       setPreviewLink(URL.createObjectURL(file));
+
+      handleInputChange({
+        target: {
+          name: "profileImage",
+          value: file,
+        },
+      });
     }
   };
 
@@ -36,6 +84,13 @@ export const ThirdStep = ({
     event.preventDefault();
     const file = Array.from(event.dataTransfer.files)[0];
     setPreviewLink(URL.createObjectURL(file));
+
+    handleInputChange({
+      target: {
+        name: "profileImage",
+        value: file,
+      },
+    });
   };
 
   const hanldeDragOver = (event) => {
@@ -63,6 +118,7 @@ export const ThirdStep = ({
             name="dateOfBirth"
             value={dateOfBirth}
             label="Date of birth"
+            error={errorDateOfBirth}
             onChange={handleInputChange}
           />
         </div>
@@ -74,6 +130,7 @@ export const ThirdStep = ({
           ref={inputImageRef}
           label="Profile image"
           onChange={handleChange}
+          error={errorProfileImage}
         />
 
         <div
@@ -103,7 +160,7 @@ export const ThirdStep = ({
         </div>
 
         <Buttons
-          addStep={addStep}
+          addStep={handleSubmit}
           currentStep={currentStep}
           previousStep={previousStep}
         />

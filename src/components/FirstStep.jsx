@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Header, UserInput, Buttons } from "@/components";
+import { useEffect } from "react";
 
 const isEmpty = (value) => !value?.trim();
 const validateStepOne = ({ firstName, lastName, userName }) => {
@@ -43,6 +44,9 @@ export const FirstStep = ({
     const { isFormValid, validationErrors } = validateStepOne(formValues);
 
     if (isFormValid) {
+      const { firstName, lastName, userName } = formValues;
+      const basicInfo = { firstName, lastName, userName };
+      localStorage.setItem("basicInfo", JSON.stringify(basicInfo));
       addStep();
       return;
     }
