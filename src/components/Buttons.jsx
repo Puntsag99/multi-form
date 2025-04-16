@@ -1,6 +1,6 @@
 "use client";
 
-export const Buttons = ({ addStep, previousStep, currentStep }) => {
+export const Buttons = ({ addStep, previousStep, currentStep, type }) => {
   console.log("current:", currentStep);
   return (
     <div className="mt-[162px] mb-8  flex w-104 gap-x-2">
@@ -13,6 +13,7 @@ export const Buttons = ({ addStep, previousStep, currentStep }) => {
         </button>
       )}
       <button
+        type={type}
         onClick={addStep}
         className="font-medium text-base  w-104 rounded-md h-11 bg-[#121316] text-white transition-all duration-300 hover:opacity-80 cursor-pointer"
       >

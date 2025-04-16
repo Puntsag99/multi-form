@@ -18,16 +18,11 @@ const initialFormValues = {
 
 const Home = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [errors, setErrors] = useState(initialFormValues);
   const [formValues, setFormValues] = useState(initialFormValues);
 
-  console.log("values:", formValues);
-
-  const addStep = () => {
-    setCurrentStep((prev) => prev + 1);
-  };
-
-  const previousStep = () => {
-    setCurrentStep((prev) => prev - 1);
+  const updateFormErrors = (errors) => {
+    setErrors((previousErrors) => ({ ...previousErrors, ...errors }));
   };
 
   const StepMotion = [FirstStep, SecondStep, ThirdStep, FinallyStep][
@@ -37,19 +32,29 @@ const Home = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
-    console.log("input value type:", typeof value);
-
+    setErrors((previousValues) => ({ ...previousValues, [name]: "" }));
     setFormValues((previousValues) => ({ ...previousValues, [name]: value }));
+  };
+
+  const addStep = () => {
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  const previousStep = () => {
+    setCurrentStep((prev) => prev - 1);
   };
 
   return (
     <div className="h-screen bg-[#F4F4F4] flex justify-center pt-[182px]">
       <AnimatePresence mode="wait">
         <StepMotion
+          errors={errors}
           addStep={addStep}
+          setErrors={setErrors}
           formValues={formValues}
           currentStep={currentStep}
           previousStep={previousStep}
+          updateFormErrors={updateFormErrors}
           handleInputChange={handleInputChange}
         />
       </AnimatePresence>

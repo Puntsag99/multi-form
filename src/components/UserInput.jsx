@@ -5,6 +5,7 @@ export const UserInput = ({
   name,
   type,
   label,
+  error,
   hidden,
   onChange,
   placeholder,
@@ -23,9 +24,12 @@ export const UserInput = ({
           hidden={hidden}
           onChange={onChange}
           placeholder={placeholder}
-          className=" w-full p-3 text-base rounded-md outline outline-[#CBD5E1] focus:outline-[#0CA5E9] text-[#121316]"
+          className={`w-full p-3 text-base rounded-md outline    ${
+            error ? "outline-red-500" : "outline-[#CBD5E1]"
+          } outline-[#CBD5E1] focus:outline-[#0CA5E9] text-[#121316]`}
         />
       </div>
+      {error && <p className="text-red-500 text-xs">{error}</p>}
     </div>
   );
 };

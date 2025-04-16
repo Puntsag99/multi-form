@@ -2,13 +2,53 @@
 import { motion } from "framer-motion";
 import { Header, UserInput, Buttons } from "@/components";
 
+const isEmpty = (value) => !value?.trim();
+const validateStepOne = ({ firstName, lastName, userName }) => {
+  const validationErrors = {};
+
+  if (isEmpty(firstName)) {
+    validationErrors.firstName = "Нэрээ оруулна уу.";
+  }
+  if (isEmpty(lastName)) {
+    validationErrors.lastName = "Овгоо оруулна уу.";
+  }
+  if (isEmpty(userName)) {
+    validationErrors.userName = "Хэрэглэгчийн нэрээ оруулна уу.";
+  }
+
+  const isFormValid = Object.keys(validationErrors).length === 0;
+
+  return { isFormValid, validationErrors };
+};
+
 export const FirstStep = ({
+  errors,
   addStep,
   formValues,
   currentStep,
+  updateFormErrors,
   handleInputChange,
 }) => {
   const { firstName, lastName, userName } = formValues;
+
+  const {
+    firstName: errorFirstName,
+    lastName: errorlastName,
+    userName: errorUsername,
+  } = errors;
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const { isFormValid, validationErrors } = validateStepOne(formValues);
+
+    if (isFormValid) {
+      addStep();
+      return;
+    }
+
+    updateFormErrors(validationErrors);
+  };
 
   return (
     <motion.div
@@ -17,7 +57,10 @@ export const FirstStep = ({
       exit={{ opacity: 0, x: -100 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="w-120 bg-white flex  flex-col  pt-8  items-center ">
+      <form
+        // onSubmit={handleSubmit}
+        className="w-120 bg-white flex  flex-col  pt-8  items-center"
+      >
         <Header />
         <div className="flex flex-col gap-y-3">
           <UserInput
@@ -25,6 +68,7 @@ export const FirstStep = ({
             name="firstName"
             value={firstName}
             label="First Name"
+            error={errorFirstName}
             onChange={handleInputChange}
             placeholder="Your first name"
           />
@@ -32,9 +76,9 @@ export const FirstStep = ({
           <UserInput
             type="text"
             name="lastName"
-            gerert
             value={lastName}
             label="Last name"
+            error={errorlastName}
             onChange={handleInputChange}
             placeholder="Yout last name"
           />
@@ -44,13 +88,14 @@ export const FirstStep = ({
             name="userName"
             value={userName}
             label="User name"
+            error={errorUsername}
             placeholder="Your username"
             onChange={handleInputChange}
           />
         </div>
 
-        <Buttons addStep={addStep} currentStep={currentStep} />
-      </div>
+        <Buttons addStep={handleSubmit} currentStep={currentStep} />
+      </form>
     </motion.div>
   );
 };
