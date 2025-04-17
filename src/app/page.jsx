@@ -29,6 +29,20 @@ const Home = () => {
     currentStep
   ];
 
+  const dataFunction = () => {
+    const getData = localStorage.getItem("FromData");
+    return getData ? JSON.parse(getData) : null;
+  };
+
+  useEffect(() => {
+    const data = dataFunction();
+    if (data) {
+      setFormValues(data);
+      setCurrentStep(data.step);
+      console.log("hiiiii", data.step);
+    }
+  }, []);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 

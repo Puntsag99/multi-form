@@ -4,22 +4,26 @@ import Image from "next/legacy/image";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { Header, UserInput, Buttons } from "@/components";
-import { isEmpty } from "@/utils/is-emtpy";
+import { isEmpty } from "@/utils/is-empty";
 
 const validStepThree = ({ dateOfBirth, profileImage }) => {
   const validationErrors = {};
+
+  const birthDate = new Date(dateOfBirth);
+  const today = new Date();
+  const age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
   if (isEmpty(dateOfBirth)) {
     validationErrors.dateOfBirth = "Төрсөн өдрөө оруулна уу.";
+  } else if (birthDate > today) {
+    validationErrors.dateOfBirth =
+      "Төрсөн өдөр одоогийн огнооноос өмнө байх ёстой.";
+  } else if (age < 18 || (age === 18 && monthDiff < 0)) {
+    validationErrors.dateOfBirth = "Та 18 ба түүнээс дээш настай байх ёстой.";
   }
 
-  // else if (бй) {
-  //   validationErrors.dateOfBirth = "Та 18 ба түүнээс дээш настай байх ёстой.";
-  // } else if (a) {
-  //   validationErrors.dateOfBirth =
-  //     "Төрсөн өдөр одоогийн огнооноос өмнө байх ёстой.";
-  // }
-
-  if (isEmpty(profileImage)) {
+  if (!profileImage) {
     validationErrors.profileImage = "Порфайл зурагаа оруулна уу.";
   }
 
@@ -50,6 +54,8 @@ export const ThirdStep = ({
     const { isFormValid, validationErrors } = validStepThree(formValues);
 
     if (isFormValid) {
+      localStorage.removeItem("FromData");
+
       addStep();
       return;
     }
@@ -93,7 +99,7 @@ export const ThirdStep = ({
     });
   };
 
-  const hanldeDragOver = (event) => {
+  const handleDragOver = (event) => {
     event.preventDefault();
     setIsDragging(true);
   };
@@ -135,7 +141,7 @@ export const ThirdStep = ({
 
         <div
           onDrop={handleDrop}
-          onDragOver={hanldeDragOver}
+          onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onClick={openBrowse}
           className={`${

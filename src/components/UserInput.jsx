@@ -7,6 +7,7 @@ export const UserInput = ({
   label,
   error,
   hidden,
+  value,
   onChange,
   placeholder,
 }) => {
@@ -19,6 +20,7 @@ export const UserInput = ({
       <div>
         <input
           ref={ref}
+          value={value}
           name={name}
           type={type}
           hidden={hidden}

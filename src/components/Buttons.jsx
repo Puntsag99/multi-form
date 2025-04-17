@@ -1,7 +1,6 @@
 "use client";
 
 export const Buttons = ({ addStep, previousStep, currentStep, type }) => {
-  console.log("current:", currentStep);
   return (
     <div className="mt-[162px] mb-8  flex w-104 gap-x-2">
       {currentStep > 0 && (

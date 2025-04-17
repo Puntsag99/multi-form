@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Header, UserInput, Buttons } from "@/components";
-import { isEmpty } from "@/utils/is-emtpy";
+import { isEmpty } from "@/utils/is-empty";
 
 const emailRegex = /^[^@\s]+@gmail\.com$/;
 const onlyNumbersRegex = /^\d+$/;
@@ -64,6 +64,11 @@ export const SecondStep = ({
     const { isFormValid, validationErrors } = validStepTwo(formValues);
 
     if (isFormValid) {
+      localStorage.setItem(
+        "FromData",
+        JSON.stringify({ ...formValues, step: 1 })
+      );
+
       addStep();
       return;
     }
@@ -76,7 +81,7 @@ export const SecondStep = ({
       initial={{ opacity: 0, x: 100 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -100 }}
-      transition={{ duration: 2 }}
+      transition={{ duration: 0.5 }}
     >
       <div className="w-120 bg-white flex  flex-col  pt-8 items-center ">
         <Header />
@@ -102,7 +107,7 @@ export const SecondStep = ({
           />
 
           <UserInput
-            type="text"
+            type="password"
             name="password"
             label="Password"
             value={password}
@@ -112,7 +117,7 @@ export const SecondStep = ({
           />
 
           <UserInput
-            type="text"
+            type="password"
             name="confirmPassword"
             value={confirmPassword}
             label="Confirm Password"
